@@ -1,8 +1,9 @@
 """Simulates manufacturing sensor events — sends them to the ingest API."""
 import random
 import time
-import httpx
 from datetime import datetime, timezone
+
+import httpx
 
 API_URL = "http://localhost:8000/ingest/event"
 
@@ -53,7 +54,7 @@ def run(count: int = 40, anomaly_rate: float = 0.45, delay: float = 0.5):
             resp = httpx.post(API_URL, json=event, timeout=5)
             tag = "ANOMALY" if is_anomaly else "normal "
             print(f"[{tag}] {event['wafer_id']} | {event['process_step']:12} | {event['sensor']:14} | {event['value']} {event['unit']} → {resp.json()['event_id'][:8]}...")
-        except Exception as e:
+        except (httpx.HTTPError, KeyError, ValueError) as e:
             print(f"Error: {e}")
         time.sleep(delay)
 

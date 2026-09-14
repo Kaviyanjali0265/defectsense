@@ -1,15 +1,17 @@
-import sys
 import json
 import re
+import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import ollama
-from prefect import flow, task, get_run_logger
+from prefect import flow, get_run_logger, task
+
+from core.graph_store import get_downstream_impact, get_upstream_steps
 from core.models import DefectReport
-from core.vectorstore import search, upsert
-from core.graph_store import get_upstream_steps, get_downstream_impact
 from core.report_store import save as save_report
+from core.vectorstore import search, upsert
 from pipeline.prompts import defect_classification_prompt
 
 LLM_MODEL = "llama3.2:1b"
@@ -48,7 +50,7 @@ def classify_defect(event: dict) -> dict:
     try:
         match = re.search(r"\{.*\}", raw, re.DOTALL)
         parsed = json.loads(match.group()) if match else {}
-    except Exception:
+    except (json.JSONDecodeError, AttributeError):
         parsed = {}
 
     result = {
@@ -125,7 +127,7 @@ def defect_triage_pipeline(event: dict) -> DefectReport | None:
         classified = classify_defect(validated)
         traced     = trace_process_chain(classified)
         report     = generate_report(traced)
-        print(f"\n  TRIAGE REPORT")
+        print("\n  TRIAGE REPORT")
         print(f"  Wafer      : {report.wafer_id}")
         print(f"  Defect     : {report.defect_type}")
         print(f"  Root cause : {report.root_cause_step}")

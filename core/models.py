@@ -1,7 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import Optional
-from enum import Enum
 import uuid
+from enum import Enum
+
+from pydantic import BaseModel, Field
 
 
 class ProcessStep(str, Enum):
@@ -43,8 +43,8 @@ class IngestResponse(BaseModel):
 class DefectReport(BaseModel):
     event_id: str
     wafer_id: str
-    defect_type: Optional[str] = None
-    root_cause_step: Optional[str] = None
-    confidence: Optional[float] = None
-    explanation: Optional[str] = None
+    defect_type: str | None = None
+    root_cause_step: str | None = None
+    confidence: float | None = None
+    explanation: str | None = None
     status: str = "pending"

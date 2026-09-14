@@ -1,6 +1,7 @@
+import os
+
 import chromadb
 import ollama
-import os
 
 CHROMA_PATH = os.getenv("CHROMA_PATH", ".data/chroma")
 EMBED_MODEL = "nomic-embed-text"

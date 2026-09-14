@@ -1,5 +1,6 @@
 """Report store backed by Redis — shared between worker and API processes."""
 import json
+
 from core.redis_client import get_client
 
 REPORTS_KEY = "defect-reports"

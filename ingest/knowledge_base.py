@@ -1,6 +1,7 @@
 """Seeds ChromaDB with known defect patterns — run once before starting the system."""
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.vectorstore import upsert

@@ -1,12 +1,13 @@
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastapi import APIRouter, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
-from core.models import SensorEvent, IngestResponse
-from core.redis_client import push_event
+
 from core import report_store
+from core.models import IngestResponse, SensorEvent
+from core.redis_client import push_event
 
 router = APIRouter()
 
