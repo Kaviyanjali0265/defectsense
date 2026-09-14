@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Environment / secrets
+.env
+.env.*
+
+# ChromaDB data (local only)
+.data/
+
+# Prefect local DB
+~/.prefect/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

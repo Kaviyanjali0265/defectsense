@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: |
+          pip install ruff pytest httpx
+          ruff check .
+
+      - name: Run tests
+        run: pytest tests/
+
+      - name: Start API and health check
+        run: |
+          python -m api.main &
+          sleep 3
+          curl -f http://localhost:8000/health
+
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build API/Worker image
+        run: docker build -f Dockerfile -t defectsense-api .
+
+      - name: Build Dashboard image
+        run: docker build -f Dockerfile.dashboard -t defectsense-dashboard .
