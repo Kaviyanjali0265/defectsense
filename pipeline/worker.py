@@ -19,11 +19,8 @@ def run():
             last_id = entry["stream_id"]
             event = entry["event"]
 
-            tag = "ANOMALY" if event["status"] == "anomaly" else "normal "
-            print(f"[{tag}] {event['wafer_id']} | {event['process_step']} | {event['sensor']} | {event['value']} {event['unit']}")
-
-            if event["status"] == "anomaly":
-                defect_triage_pipeline(event)
+            print(f"[event] {event['wafer_id']} | {event['process_step']} | machine={event.get('machine_id','?')}")
+            defect_triage_pipeline(event)
 
 
 if __name__ == "__main__":

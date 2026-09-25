@@ -1,22 +1,29 @@
-.PHONY: seed api worker dashboard generate docker stop
+.PHONY: api worker dashboard generate docker stop dev
 
-seed:
-	python -m ingest.knowledge_base
+PYTHON := $(CURDIR)/.venv/bin/python
 
 api:
-	python -m api.main
+	"$(PYTHON)" -m api.main
 
 worker:
-	python -m pipeline.worker
+	"$(PYTHON)" -m pipeline.worker
 
 dashboard:
 	cd dashboard && npm run dev
 
 generate:
-	python -m ingest.generator
+	"$(PYTHON)" -m ingest.generator
 
 docker:
 	docker compose up --build
 
 stop:
 	docker compose down
+
+dev:
+	@echo "Starting api, worker, dashboard — Ctrl+C to stop all"
+	@trap 'kill 0' EXIT INT TERM; \
+	"$(PYTHON)" -m api.main & \
+	"$(PYTHON)" -m pipeline.worker & \
+	(cd dashboard && npm run dev) & \
+	wait

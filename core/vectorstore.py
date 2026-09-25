@@ -31,12 +31,12 @@ def upsert(collection_name: str, doc_id: str, text: str, metadata: dict):
     )
 
 
-def search(collection_name: str, query: str, n_results: int = 3) -> list[dict]:
+def search(collection_name: str, query: str, n_results: int = 3, where: dict | None = None) -> list[dict]:
     col = get_client().get_or_create_collection(collection_name)
-    results = col.query(
-        query_embeddings=[_embed(query)],
-        n_results=n_results,
-    )
+    kwargs = {"query_embeddings": [_embed(query)], "n_results": n_results}
+    if where:
+        kwargs["where"] = where
+    results = col.query(**kwargs)
     if not results["documents"][0]:
         return []
     return [
@@ -47,3 +47,14 @@ def search(collection_name: str, query: str, n_results: int = 3) -> list[dict]:
             results["distances"][0],
         )
     ]
+
+
+def fetch_seen_before(step: str, mechanism: str, n_results: int = 3) -> list[dict]:
+    """Past verified cases of this exact mechanism at this step, from defect_history.
+    Shared by the pipeline (at report-generation time) and the verify API (at verify time)."""
+    try:
+        query = f"{step} {mechanism} verified"
+        results = search("defect_history", query, n_results=n_results, where={"step": step})
+        return [r["metadata"] for r in results if r["metadata"].get("mechanism") == mechanism]
+    except Exception:  # noqa: BLE001 — best-effort lookup, any failure returns empty
+        return []

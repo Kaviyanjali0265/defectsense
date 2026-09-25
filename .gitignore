@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.egg-info/
+.pytest_cache/
+.ruff_cache/
 
 # Environment / secrets
 .env
@@ -14,6 +16,10 @@ __pycache__/
 
 # Prefect local DB
 ~/.prefect/
+
+# Runtime-generated logs / eval outputs (regenerable, not source)
+ingest/injected_log.jsonl
+evals/results_*.json
 
 # OS
 .DS_Store

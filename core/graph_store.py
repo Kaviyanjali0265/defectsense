@@ -1,19 +1,21 @@
 import networkx as nx
 
 PROCESS_FLOW = [
+    ("deposition",  "cmp"),
+    ("cmp",         "lithography"),
     ("lithography", "etching"),
-    ("etching", "deposition"),
-    ("deposition", "cmp"),
-    ("cmp", "diffusion"),
-    ("diffusion", "inspection"),
-    ("inspection", "metrology"),
+    ("etching",     "wet_clean"),
+    ("wet_clean",   "diffusion"),
+    ("diffusion",   "inspection"),
+    ("inspection",  "metrology"),
 ]
 
 STEP_METADATA = {
-    "lithography": {"risk_level": "high",   "description": "Pattern transfer via light exposure"},
-    "etching":     {"risk_level": "high",   "description": "Material removal via chemical/plasma"},
     "deposition":  {"risk_level": "medium", "description": "Thin film material deposition"},
     "cmp":         {"risk_level": "medium", "description": "Chemical mechanical planarization"},
+    "lithography": {"risk_level": "high",   "description": "Pattern transfer via light exposure"},
+    "etching":     {"risk_level": "high",   "description": "Material removal via chemical/plasma"},
+    "wet_clean":   {"risk_level": "medium", "description": "Chemical cleaning to remove etch residues"},
     "diffusion":   {"risk_level": "low",    "description": "Dopant introduction via heat"},
     "inspection":  {"risk_level": "low",    "description": "Defect detection and measurement"},
     "metrology":   {"risk_level": "low",    "description": "Dimensional measurement and verification"},

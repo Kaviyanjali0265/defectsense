@@ -1,0 +1,802 @@
+[
+  {
+    "event": {
+      "event_id": "eval-001",
+      "wafer_id": "W-EVAL-001",
+      "machine_id": "DEP-01",
+      "process_step": "deposition",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 136.39,
+        "pressure": 4.26,
+        "vibration": 0.21,
+        "particle_count": 6.12,
+        "flow_rate": 102.36
+      },
+      "operator_note": null
+    },
+    "ground_truth": "chamber_seal_leak",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-002",
+      "wafer_id": "W-EVAL-002",
+      "machine_id": "DEP-01",
+      "process_step": "deposition",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 178.29,
+        "pressure": 3.91,
+        "vibration": 0.13,
+        "particle_count": 2.11,
+        "flow_rate": 95.3
+      },
+      "operator_note": null
+    },
+    "ground_truth": "coolant_restriction",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-003",
+      "wafer_id": "W-EVAL-003",
+      "machine_id": "DEP-01",
+      "process_step": "deposition",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 132.19,
+        "pressure": 4.62,
+        "vibration": 0.11,
+        "particle_count": 0.99,
+        "flow_rate": 73.69
+      },
+      "operator_note": null
+    },
+    "ground_truth": "gas_line_restriction",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-004",
+      "wafer_id": "W-EVAL-004",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.45,
+        "pressure": 2.89,
+        "vibration": 0.68,
+        "particle_count": 12.14,
+        "flow_rate": 95.06
+      },
+      "operator_note": null
+    },
+    "ground_truth": "polishing_pad_wear",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-005",
+      "wafer_id": "W-EVAL-005",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 138.06,
+        "pressure": 3.08,
+        "vibration": 0.9,
+        "particle_count": 0.78,
+        "flow_rate": 104.57
+      },
+      "operator_note": null
+    },
+    "ground_truth": "head_bearing_wear",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-006",
+      "wafer_id": "W-EVAL-006",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 143.41,
+        "pressure": 2.84,
+        "vibration": 0.14,
+        "particle_count": 4.24,
+        "flow_rate": 72.99
+      },
+      "operator_note": null
+    },
+    "ground_truth": "slurry_line_blockage",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-007",
+      "wafer_id": "W-EVAL-007",
+      "machine_id": "LIT-01",
+      "process_step": "lithography",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 138.07,
+        "pressure": 2.58,
+        "vibration": 0.31,
+        "particle_count": 12.45,
+        "flow_rate": 98.79
+      },
+      "operator_note": null
+    },
+    "ground_truth": "airlock_breach",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-008",
+      "wafer_id": "W-EVAL-008",
+      "machine_id": "LIT-01",
+      "process_step": "lithography",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.52,
+        "pressure": 3.13,
+        "vibration": 0.94,
+        "particle_count": 4.31,
+        "flow_rate": 100.77
+      },
+      "operator_note": null
+    },
+    "ground_truth": "stage_isolation_failure",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-009",
+      "wafer_id": "W-EVAL-009",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 137.05,
+        "pressure": 4.27,
+        "vibration": 0.19,
+        "particle_count": 1.45,
+        "flow_rate": 95.8
+      },
+      "operator_note": null
+    },
+    "ground_truth": "exhaust_valve_blockage",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-010",
+      "wafer_id": "W-EVAL-010",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 132.33,
+        "pressure": 3.28,
+        "vibration": 0.21,
+        "particle_count": 3.18,
+        "flow_rate": 129.87
+      },
+      "operator_note": null
+    },
+    "ground_truth": "mfc_drift",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-011",
+      "wafer_id": "W-EVAL-011",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 143.73,
+        "pressure": 2.88,
+        "vibration": 0.21,
+        "particle_count": 12.38,
+        "flow_rate": 101.48
+      },
+      "operator_note": null
+    },
+    "ground_truth": "electrode_erosion",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-012",
+      "wafer_id": "W-EVAL-012",
+      "machine_id": "WET-01",
+      "process_step": "wet_clean",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 146.05,
+        "pressure": 2.87,
+        "vibration": 0.39,
+        "particle_count": 10.91,
+        "flow_rate": 98.79
+      },
+      "operator_note": null
+    },
+    "ground_truth": "chemical_bath_contamination",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-013",
+      "wafer_id": "W-EVAL-013",
+      "machine_id": "WET-01",
+      "process_step": "wet_clean",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 139.9,
+        "pressure": 3.06,
+        "vibration": 0.32,
+        "particle_count": 8.42,
+        "flow_rate": 76.65
+      },
+      "operator_note": null
+    },
+    "ground_truth": "rinse_flow_failure",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-014",
+      "wafer_id": "W-EVAL-014",
+      "machine_id": "DIF-01",
+      "process_step": "diffusion",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 181.12,
+        "pressure": 2.89,
+        "vibration": 0.11,
+        "particle_count": 1.58,
+        "flow_rate": 97.68
+      },
+      "operator_note": null
+    },
+    "ground_truth": "heater_degradation",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-015",
+      "wafer_id": "W-EVAL-015",
+      "machine_id": "DIF-01",
+      "process_step": "diffusion",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 142.19,
+        "pressure": 3.18,
+        "vibration": 0.45,
+        "particle_count": 1.57,
+        "flow_rate": 73.78
+      },
+      "operator_note": null
+    },
+    "ground_truth": "purge_gas_failure",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-016",
+      "wafer_id": "W-EVAL-016",
+      "machine_id": "INS-01",
+      "process_step": "inspection",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 133.96,
+        "pressure": 3.17,
+        "vibration": 0.92,
+        "particle_count": 1.32,
+        "flow_rate": 97.47
+      },
+      "operator_note": null
+    },
+    "ground_truth": "stage_motor_bearing_wear",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-017",
+      "wafer_id": "W-EVAL-017",
+      "machine_id": "INS-01",
+      "process_step": "inspection",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.61,
+        "pressure": 2.91,
+        "vibration": 0.33,
+        "particle_count": 12.31,
+        "flow_rate": 98.99
+      },
+      "operator_note": null
+    },
+    "ground_truth": "upstream_contamination",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-018",
+      "wafer_id": "W-EVAL-018",
+      "machine_id": "MET-01",
+      "process_step": "metrology",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 165.25,
+        "pressure": 3.2,
+        "vibration": 0.3,
+        "particle_count": 0.45,
+        "flow_rate": 95.47
+      },
+      "operator_note": null
+    },
+    "ground_truth": "enclosure_temperature_drift",
+    "slice": "unambiguous",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-019",
+      "wafer_id": "W-EVAL-019",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 131.1,
+        "pressure": 3.05,
+        "vibration": 0.97,
+        "particle_count": 11.4,
+        "flow_rate": 95.64
+      },
+      "operator_note": "Polishing pad replaced yesterday"
+    },
+    "ground_truth": "head_bearing_wear",
+    "slice": "note_dependent",
+    "note_dependent": true
+  },
+  {
+    "event": {
+      "event_id": "eval-020",
+      "wafer_id": "W-EVAL-020",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 133.82,
+        "pressure": 3.2,
+        "vibration": 0.93,
+        "particle_count": 12.45,
+        "flow_rate": 103.61
+      },
+      "operator_note": "Head bearings replaced last week"
+    },
+    "ground_truth": "polishing_pad_wear",
+    "slice": "note_dependent",
+    "note_dependent": true
+  },
+  {
+    "event": {
+      "event_id": "eval-021",
+      "wafer_id": "W-EVAL-021",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 130.11,
+        "pressure": 4.79,
+        "vibration": 0.37,
+        "particle_count": 2.68,
+        "flow_rate": 107.71
+      },
+      "operator_note": "Exhaust line cleaned last shift"
+    },
+    "ground_truth": "mfc_drift",
+    "slice": "note_dependent",
+    "note_dependent": true
+  },
+  {
+    "event": {
+      "event_id": "eval-022",
+      "wafer_id": "W-EVAL-022",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 136.41,
+        "pressure": 4.32,
+        "vibration": 0.27,
+        "particle_count": 2.27,
+        "flow_rate": 114.43
+      },
+      "operator_note": "MFC recalibrated yesterday"
+    },
+    "ground_truth": "exhaust_valve_blockage",
+    "slice": "note_dependent",
+    "note_dependent": true
+  },
+  {
+    "event": {
+      "event_id": "eval-023",
+      "wafer_id": "W-EVAL-023",
+      "machine_id": "WET-01",
+      "process_step": "wet_clean",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 148.64,
+        "pressure": 2.91,
+        "vibration": 0.3,
+        "particle_count": 10.94,
+        "flow_rate": 104.13
+      },
+      "operator_note": "Bath last replaced 3 days ago"
+    },
+    "ground_truth": "chemical_bath_contamination",
+    "slice": "note_neutral",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-024",
+      "wafer_id": "W-EVAL-024",
+      "machine_id": "DIF-01",
+      "process_step": "diffusion",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 183.81,
+        "pressure": 2.92,
+        "vibration": 0.36,
+        "particle_count": 3.04,
+        "flow_rate": 96.53
+      },
+      "operator_note": "PID controller not recalibrated this quarter"
+    },
+    "ground_truth": "heater_degradation",
+    "slice": "note_neutral",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-025",
+      "wafer_id": "W-EVAL-025",
+      "machine_id": "DEP-01",
+      "process_step": "deposition",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 137.63,
+        "pressure": 3.02,
+        "vibration": 0.41,
+        "particle_count": 11.53,
+        "flow_rate": 95.01
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-026",
+      "wafer_id": "W-EVAL-026",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 184.02,
+        "pressure": 2.95,
+        "vibration": 0.49,
+        "particle_count": 4.03,
+        "flow_rate": 97.39
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-027",
+      "wafer_id": "W-EVAL-027",
+      "machine_id": "LIT-01",
+      "process_step": "lithography",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 162.66,
+        "pressure": 2.83,
+        "vibration": 0.29,
+        "particle_count": 0.35,
+        "flow_rate": 102.61
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-028",
+      "wafer_id": "W-EVAL-028",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 185.47,
+        "pressure": 3.02,
+        "vibration": 0.21,
+        "particle_count": 4.36,
+        "flow_rate": 99.23
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-029",
+      "wafer_id": "W-EVAL-029",
+      "machine_id": "WET-01",
+      "process_step": "wet_clean",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 137.55,
+        "pressure": 4.57,
+        "vibration": 0.39,
+        "particle_count": 1.99,
+        "flow_rate": 101.72
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-030",
+      "wafer_id": "W-EVAL-030",
+      "machine_id": "DIF-01",
+      "process_step": "diffusion",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.18,
+        "pressure": 4.69,
+        "vibration": 0.19,
+        "particle_count": 1.69,
+        "flow_rate": 100.88
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-031",
+      "wafer_id": "W-EVAL-031",
+      "machine_id": "INS-01",
+      "process_step": "inspection",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 130.07,
+        "pressure": 4.29,
+        "vibration": 0.12,
+        "particle_count": 0.34,
+        "flow_rate": 95.31
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-032",
+      "wafer_id": "W-EVAL-032",
+      "machine_id": "MET-01",
+      "process_step": "metrology",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 132.38,
+        "pressure": 3.07,
+        "vibration": 0.19,
+        "particle_count": 0.66,
+        "flow_rate": 127.21
+      },
+      "operator_note": null
+    },
+    "ground_truth": "unrecognized_pattern",
+    "slice": "unrecognized",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-033",
+      "wafer_id": "W-EVAL-033",
+      "machine_id": "DEP-01",
+      "process_step": "deposition",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 134.73,
+        "pressure": 2.96,
+        "vibration": 0.14,
+        "particle_count": 3.29,
+        "flow_rate": 98.54
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-034",
+      "wafer_id": "W-EVAL-034",
+      "machine_id": "CMP-01",
+      "process_step": "cmp",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 134.11,
+        "pressure": 3.15,
+        "vibration": 0.12,
+        "particle_count": 3.27,
+        "flow_rate": 101.46
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-035",
+      "wafer_id": "W-EVAL-035",
+      "machine_id": "LIT-01",
+      "process_step": "lithography",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 130.61,
+        "pressure": 3.09,
+        "vibration": 0.42,
+        "particle_count": 0.55,
+        "flow_rate": 96.92
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-036",
+      "wafer_id": "W-EVAL-036",
+      "machine_id": "ETC-01",
+      "process_step": "etching",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.36,
+        "pressure": 2.86,
+        "vibration": 0.17,
+        "particle_count": 2.31,
+        "flow_rate": 103.74
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-037",
+      "wafer_id": "W-EVAL-037",
+      "machine_id": "WET-01",
+      "process_step": "wet_clean",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 130.75,
+        "pressure": 3.12,
+        "vibration": 0.44,
+        "particle_count": 0.49,
+        "flow_rate": 101.52
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-038",
+      "wafer_id": "W-EVAL-038",
+      "machine_id": "DIF-01",
+      "process_step": "diffusion",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 135.41,
+        "pressure": 2.81,
+        "vibration": 0.14,
+        "particle_count": 3.77,
+        "flow_rate": 97.36
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-039",
+      "wafer_id": "W-EVAL-039",
+      "machine_id": "INS-01",
+      "process_step": "inspection",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 134.06,
+        "pressure": 2.99,
+        "vibration": 0.45,
+        "particle_count": 4.51,
+        "flow_rate": 96.65
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  },
+  {
+    "event": {
+      "event_id": "eval-040",
+      "wafer_id": "W-EVAL-040",
+      "machine_id": "MET-01",
+      "process_step": "metrology",
+      "timestamp": "2026-09-25T00:00:00+00:00",
+      "readings": {
+        "temperature": 130.02,
+        "pressure": 2.96,
+        "vibration": 0.47,
+        "particle_count": 3.93,
+        "flow_rate": 97.85
+      },
+      "operator_note": null
+    },
+    "ground_truth": "normal",
+    "slice": "normal",
+    "note_dependent": false
+  }
+]
