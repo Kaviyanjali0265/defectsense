@@ -1,8 +1,24 @@
 """Prompt builder for the diagnosis step."""
+import hashlib
+import os
 import random
 
 from core.limits import SENSOR_LIMITS
 from core.mechanisms import MECHANISMS, candidates_for_step, get_distinguishing_check
+
+
+def _shuffle_seed_for(event_id: str) -> int:
+    """Deterministic per-event seed, salted by SHUFFLE_SEED (env, default unset).
+
+    Uses a local Random instance (never touches global random state) so this is
+    side-effect-free for callers. Same event_id + same SHUFFLE_SEED always produces
+    the same shuffle order — needed so eval runs are reproducible — while different
+    events still get effectively-random-looking, independent orders, preserving the
+    anti-position-bias property the shuffle exists for in the first place.
+    """
+    salt = os.getenv("SHUFFLE_SEED", "")
+    digest = hashlib.sha256(f"{salt}:{event_id}".encode()).hexdigest()
+    return int(digest[:8], 16)
 
 
 def _candidate_block(shuffled_candidates: list[str]) -> str:
@@ -55,7 +71,8 @@ def build_diagnosis_prompt(
     if shuffled_candidates is None:
         candidates = candidates_for_step(step)
         shuffled_candidates = candidates[:]
-        random.shuffle(shuffled_candidates)
+        rng = random.Random(_shuffle_seed_for(event.get("event_id", "")))
+        rng.shuffle(shuffled_candidates)
 
     history_lines = ""
     if verified_history:

@@ -20,6 +20,8 @@ __pycache__/
 # Runtime-generated logs / eval outputs (regenerable, not source)
 ingest/injected_log.jsonl
 evals/results_*.json
+evals/retrieval_results_*.json
+evals/history_manifest.json
 
 # OS
 .DS_Store

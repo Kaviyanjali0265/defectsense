@@ -122,7 +122,7 @@ async def verify_report(event_id: str, body: VerifyRequest):
 
 def _write_to_history(report: dict) -> None:
     try:
-        from core.vectorstore import upsert
+        from core.vectorstore import DEFECT_HISTORY_COLLECTION, upsert
         mechanism = report.get("verified_mechanism") or report.get("mechanism", "unknown")
         step      = report.get("process_step", "unknown")
         machine   = report.get("machine_id", "unknown")
@@ -139,7 +139,7 @@ def _write_to_history(report: dict) -> None:
             f"mechanism={mechanism}, alarms=[{alarms}], fix={fix}."
         )
         upsert(
-            collection_name="defect_history",
+            collection_name=DEFECT_HISTORY_COLLECTION,
             doc_id=f"hist-{report['event_id']}",
             text=text,
             metadata={

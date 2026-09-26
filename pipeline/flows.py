@@ -6,16 +6,28 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import ollama
 from pydantic import BaseModel, field_validator
 
 from core.limits import has_alarm, label_all_readings
 from core.models import DefectReport
 from core.models import MechanismEnum as ModelMechanismEnum
-from core.vectorstore import search
+from core.vectorstore import DEFECT_HISTORY_COLLECTION, search
 from pipeline.prompts import build_diagnosis_prompt
 
-LLM_MODEL            = os.getenv("LLM_MODEL", "llama3.2:3b")
+# ── Provider switch: "ollama" (default, local) or "groq" (cloud, OpenAI-compatible) ──
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+if LLM_PROVIDER == "groq":
+    LLM_MODEL = os.getenv("LLM_MODEL") or os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+else:
+    LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b")
+
 CONFIDENCE_THRESHOLD = 0.7
 
 
@@ -132,6 +144,71 @@ def _note_contradicts_pick(mechanism: str, reasoning: str, explanation: str) -> 
     return False
 
 
+# ── Provider calls — each returns (raw_json_str, prompt_tokens, output_tokens) ────
+
+def _call_ollama(prompt: str, schema: dict) -> tuple[str, int, int]:
+    response = ollama.chat(
+        model=LLM_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+        format=schema,
+        options={"temperature": 0, "num_predict": 400},
+    )
+    raw        = response["message"]["content"].strip()
+    prompt_tok = response.get("prompt_eval_count", len(prompt) // 4)
+    eval_tok   = response.get("eval_count", 0)
+    return raw, prompt_tok, eval_tok
+
+
+_groq_client = None
+
+
+def _get_groq_client():
+    global _groq_client
+    if _groq_client is None:
+        from openai import OpenAI
+        if not GROQ_API_KEY:
+            raise RuntimeError("LLM_PROVIDER=groq but GROQ_API_KEY is not set")
+        _groq_client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=GROQ_API_KEY)
+    return _groq_client
+
+
+def _call_groq(prompt: str, schema: dict) -> tuple[str, int, int]:
+    client = _get_groq_client()
+    tool = {
+        "type": "function",
+        "function": {
+            "name": "submit_diagnosis",
+            "description": "Submit the mechanism diagnosis for this sensor anomaly.",
+            "parameters": schema,
+        },
+    }
+    try:
+        response = client.chat.completions.create(
+            model=LLM_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            tools=[tool],
+            tool_choice={"type": "function", "function": {"name": "submit_diagnosis"}},
+            temperature=0,
+            # Reasoning models (e.g. qwen3.8) burn tokens on internal chain-of-thought
+            # before ever calling the tool — 400 (tuned for a non-reasoning 3B local
+            # model) cuts them off mid-thought. Groq is fast, so a bigger cap here is cheap.
+            max_tokens=4000,
+        )
+    except Exception as exc:
+        raise DiagnosisParseError(f"Groq API error: {exc}", raw="") from exc
+
+    msg = response.choices[0].message
+    if not msg.tool_calls:
+        raise DiagnosisParseError(
+            "Groq returned no tool call (likely ran out of tokens mid-reasoning)",
+            raw=msg.content or "",
+        )
+    raw        = msg.tool_calls[0].function.arguments
+    prompt_tok = response.usage.prompt_tokens if response.usage else len(prompt) // 4
+    eval_tok   = response.usage.completion_tokens if response.usage else 0
+    return raw, prompt_tok, eval_tok
+
+
 # ── Core diagnosis function (shared by pipeline and smoke test) ───────────────
 
 def run_diagnosis(
@@ -143,15 +220,10 @@ def run_diagnosis(
     prompt, shuffled_order = build_diagnosis_prompt(event, labeled, verified_history)
     schema = _build_schema(shuffled_order)
 
-    response = ollama.chat(
-        model=LLM_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        format=schema,
-        options={"temperature": 0, "num_predict": 400},
-    )
-    raw        = response["message"]["content"].strip()
-    prompt_tok = response.get("prompt_eval_count", len(prompt) // 4)
-    eval_tok   = response.get("eval_count", 0)
+    if LLM_PROVIDER == "groq":
+        raw, prompt_tok, eval_tok = _call_groq(prompt, schema)
+    else:
+        raw, prompt_tok, eval_tok = _call_ollama(prompt, schema)
 
     try:
         parsed = json.loads(raw)
@@ -224,7 +296,7 @@ def classify_defect(event: dict) -> dict:
         f"{step} anomaly: "
         + ", ".join(f"{s} {r['label']}" for s, r in labeled.items() if r["label"] != "normal")
     )
-    history_raw = search("defect_history", query, n_results=2, where={"step": step})
+    history_raw = search(DEFECT_HISTORY_COLLECTION, query, n_results=2, where={"step": step})
     verified_history = [h["metadata"] for h in history_raw]
 
     diagnosis, shuffled_order, prompt_tok, eval_tok = run_diagnosis(event, labeled, verified_history)

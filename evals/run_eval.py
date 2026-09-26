@@ -20,18 +20,24 @@ evals/build_dataset.py for how):
 Only 32 of the 40 events call the LLM (~35-40s each ⇒ roughly 20 minutes
 total on llama3.2:3b on typical hardware).
 
-Diagnosis is run with an EMPTY verified_history (same choice smoke_diagnosis.py
-makes) so results don't drift as defect_history accumulates between runs —
-history-based few-shot help is deliberately out of scope for this eval.
+Diagnosis is run with an EMPTY verified_history by default (WITH_HISTORY unset) —
+same choice smoke_diagnosis.py makes — so results don't drift as defect_history
+accumulates between runs. Set WITH_HISTORY=1 to instead retrieve from the eval-only
+history collection (built by evals/build_history.py; never live defect_history) using
+the exact same query construction as classify_defect(), to measure whether retrieval
+actually helps diagnosis (goal B of the RAG eval — see evals/run_retrieval_eval.py
+for goal A, the retriever measured in isolation with no LLM calls).
 
 Usage:
     python evals/run_eval.py
     LLM_MODEL=qwen2.5:3b python evals/run_eval.py   # compare a different model
+    WITH_HISTORY=1 python evals/run_eval.py         # measure history's effect on diagnosis
+    LLM_PROVIDER=groq python evals/run_eval.py       # compare a different provider
 
-Writes evals/results_<model>_<timestamp>.json and prints a summary report.
-Never mutates defect_history, Redis, or the report store — this is read-only
-against a local JSON file, using the same run_diagnosis() the real pipeline
-calls.
+Writes evals/results_<provider>_<model>_<hist-on|hist-off>_<timestamp>.json and
+prints a summary report. Never mutates live defect_history, Redis, or the report
+store — this is read-only against a local JSON file, using the same run_diagnosis()
+the real pipeline calls.
 """
 import json
 import os
@@ -46,9 +52,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.limits import has_alarm, label_all_readings
 from core.mechanisms import CATEGORY
+from core.vectorstore import search
+from evals.build_history import EVAL_HISTORY_COLLECTION
 from pipeline.flows import (
     CONFIDENCE_THRESHOLD,
     LLM_MODEL,
+    LLM_PROVIDER,
     DiagnosisParseError,
     _note_contradicts_pick,
     _signature_consistent,
@@ -56,6 +65,23 @@ from pipeline.flows import (
 )
 
 DATASET_PATH = Path(__file__).parent / "dataset.json"
+
+# Default unchanged (WITH_HISTORY unset -> verified_history=[], same as always).
+# When set, retrieves from the eval-only history collection (never live
+# defect_history) using the exact same query construction as classify_defect.
+WITH_HISTORY = os.getenv("WITH_HISTORY", "0") == "1"
+
+
+def _fetch_eval_history(event: dict, labeled: dict) -> list[dict]:
+    """Mirrors pipeline/flows.py classify_defect()'s history retrieval exactly,
+    just pointed at the eval-only collection instead of live defect_history."""
+    step = event["process_step"]
+    query = (
+        f"{step} anomaly: "
+        + ", ".join(f"{s} {r['label']}" for s, r in labeled.items() if r["label"] != "normal")
+    )
+    history_raw = search(EVAL_HISTORY_COLLECTION, query, n_results=2, where={"step": step})
+    return [h["metadata"] for h in history_raw]
 
 
 def _status_for(mechanism, sig_ok, note_conflict, confidence):
@@ -89,12 +115,17 @@ def run_one(record: dict) -> dict:
     if is_normal:
         out.update(predicted="normal", correct=(gt == "normal"), status="skipped_normal",
                     review_reason=None, confidence=None, sig_ok=None, note_conflict=None,
-                    position=None, ms=0)
+                    position=None, ms=0, history_has_gt=None)
         return out
+
+    verified_history = _fetch_eval_history(event, labeled) if WITH_HISTORY else []
+    out["history_has_gt"] = (
+        any(h.get("mechanism") == gt for h in verified_history) if WITH_HISTORY else None
+    )
 
     t0 = time.perf_counter()
     try:
-        diagnosis, order, ptok, etok = run_diagnosis(event, labeled, [])
+        diagnosis, order, ptok, etok = run_diagnosis(event, labeled, verified_history)
         ms = int((time.perf_counter() - t0) * 1000)
         predicted = diagnosis.mechanism
         sig_ok = _signature_consistent(predicted, labeled)
@@ -273,8 +304,9 @@ def main():
         random.seed(42)  # reproducible subset, still representative across all slices
         dataset = random.sample(dataset, limit)
 
+    history_tag = "hist-on" if WITH_HISTORY else "hist-off"
     print(f"\nLoaded {len(dataset)} events from {DATASET_PATH.name}" + (f" (EVAL_LIMIT={limit})" if limit else ""))
-    print(f"Model: {LLM_MODEL}\n")
+    print(f"Provider: {LLM_PROVIDER}  Model: {LLM_MODEL}  History: {history_tag}\n")
 
     results = []
     for i, record in enumerate(dataset):
@@ -286,12 +318,23 @@ def main():
 
     metrics = compute_metrics(results)
     print_report(LLM_MODEL, metrics)
+    if WITH_HISTORY:
+        scored = [r for r in results if r.get("history_has_gt") is not None]
+        n_has_gt = sum(1 for r in scored if r["history_has_gt"])
+        print(f"  History contained ground-truth mechanism: {n_has_gt}/{len(scored)}\n")
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     safe_model = LLM_MODEL.replace(":", "-").replace("/", "-")
-    out_path = Path(__file__).parent / f"results_{safe_model}_{timestamp}.json"
+    safe_provider = LLM_PROVIDER.replace(":", "-").replace("/", "-")
+    out_path = Path(__file__).parent / f"results_{safe_provider}_{safe_model}_{history_tag}_{timestamp}.json"
     with open(out_path, "w") as f:
-        json.dump({"model": LLM_MODEL, "timestamp": timestamp, "metrics": metrics, "raw_results": results}, f, indent=2)
+        json.dump(
+            {
+                "provider": LLM_PROVIDER, "model": LLM_MODEL, "history": "on" if WITH_HISTORY else "off",
+                "timestamp": timestamp, "metrics": metrics, "raw_results": results,
+            },
+            f, indent=2,
+        )
     print(f"Saved full results to {out_path}\n")
 
 
