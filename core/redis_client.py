@@ -1,9 +1,10 @@
 import json
-import os
 
 import redis
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+from core.settings import settings
+
+REDIS_URL = settings.redis_url
 STREAM_NAME = "defect-events"
 
 _client: redis.Redis | None = None

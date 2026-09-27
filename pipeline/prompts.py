@@ -1,10 +1,10 @@
 """Prompt builder for the diagnosis step."""
 import hashlib
-import os
 import random
 
 from core.limits import SENSOR_LIMITS
 from core.mechanisms import MECHANISMS, candidates_for_step, get_distinguishing_check
+from core.settings import settings
 
 
 def _shuffle_seed_for(event_id: str) -> int:
@@ -16,8 +16,7 @@ def _shuffle_seed_for(event_id: str) -> int:
     events still get effectively-random-looking, independent orders, preserving the
     anti-position-bias property the shuffle exists for in the first place.
     """
-    salt = os.getenv("SHUFFLE_SEED", "")
-    digest = hashlib.sha256(f"{salt}:{event_id}".encode()).hexdigest()
+    digest = hashlib.sha256(f"{settings.shuffle_seed}:{event_id}".encode()).hexdigest()
     return int(digest[:8], 16)
 
 

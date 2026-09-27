@@ -1,12 +1,12 @@
 """Report store backed by Redis — keyed by event_id."""
 import json
-import os
 
 from core.redis_client import get_client
+from core.settings import settings
 
 REPORTS_HASH = "defect:reports"   # Redis hash: event_id → JSON
 REPORTS_LIST = "defect:report_ids"  # Redis list: insertion order
-MAX_REPORTS  = int(os.getenv("MAX_REPORTS", "200"))  # oldest evicted beyond this
+MAX_REPORTS  = settings.max_reports  # oldest evicted beyond this
 
 
 def save(report) -> None:

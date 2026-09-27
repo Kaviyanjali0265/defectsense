@@ -11,7 +11,8 @@ __pycache__/
 .env
 .env.*
 
-# ChromaDB data (local only)
+# Local-only data directories (not used by current Qdrant setup, kept as a
+# general safety net for any future local persistence)
 .data/
 
 # Prefect local DB

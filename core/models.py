@@ -82,6 +82,9 @@ class DefectReport(BaseModel):
     recurrence_count:       int = 0
     status:                 str = "pending"
     review_reason:          str | None = None
+    operator_note:          str | None = None
+    note_injection_flagged: bool = False
+    note_pii_flagged:       bool = False
     verified_mechanism:     str | None = None
     fix_applied:            str | None = None
     verified_at:            str | None = None

@@ -4,8 +4,9 @@ pydantic
 httpx
 redis
 prefect
-chromadb
+qdrant-client
 networkx
 ollama
-openai
-python-dotenv
+litellm
+pydantic-settings
+langfuse
